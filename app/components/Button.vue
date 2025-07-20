@@ -1,8 +1,3 @@
-<script setup lang="ts">
-// No props are needed if you only use a slot for the content.
-// You can add other props for variants, disabled state, etc.
-</script>
-
 <template>
   <button
       type="button"

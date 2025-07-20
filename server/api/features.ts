@@ -1,6 +1,14 @@
-// This defines a simple array of our feature data.
-// You could also import this from a separate .json or .ts file.
-const featureData = [
+// 1. Define the shape of a single feature object.
+// Using an interface is a common and clean way to do this.
+interface Feature {
+    id: string;
+    title: string;
+    description: string;
+    icon: string;
+}
+
+// featureData must be an array of 'Feature' objects.
+const featureData: Feature[] = [
     {
         id: 'nuxt-ready',
         title: 'Nuxt 4 Ready',
@@ -27,8 +35,8 @@ const featureData = [
     },
 ];
 
-// This creates the API route handler.
-// Nuxt will automatically return the data as JSON.
+// Creates the API route handler.
+// Because 'featureData' is typed, Nuxt knows the exact shape of the API response.
 export default defineEventHandler((event) => {
     return featureData;
 });

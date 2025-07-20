@@ -28,15 +28,10 @@
         <div
             v-for="feature in features"
             :key="feature.id"
-            class="p-4 border rounded-lg bg-white shadow-sm"
+            class="p-4 rounded-lg bg-white shadow-sm"
         >
-          <h3 class="text-lg font-semibold flex items-center text-gray-800">
-            <Icon :name="feature.icon" class="mr-3 text-2xl text-emerald-500" />
-            {{ feature.title }}
-          </h3>
-          <p class="text-gray-600 mt-2 pl-9">
-            {{ feature.description }}
-          </p>
+        {{ feature.title }}
+        {{ feature.description }}
         </div>
       </div>
     </div>
@@ -44,11 +39,9 @@
 </template>
 
 <script setup lang="ts">
-// `useFetch` is the standard way to fetch data from an API in Nuxt.
-// It automatically infers the type of `features` from our API endpoint!
-const {
-  data: features,
-  pending,
-  error,
-} = await useFetch('/api/features');
+  const {
+    data: features,
+    pending,
+    error,
+  } = await useFetch('/api/features');
 </script>
