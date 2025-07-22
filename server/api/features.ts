@@ -1,42 +1,18 @@
-// 1. Define the shape of a single feature object.
-// Using an interface is a common and clean way to do this.
-interface Feature {
-    id: string;
-    title: string;
-    description: string;
-    icon: string;
-}
+// Use relative paths for imports within the /server directory
+import { db } from '../utils/db';
+import { features } from '../db/schema';
 
-// featureData must be an array of 'Feature' objects.
-const featureData: Feature[] = [
-    {
-        id: 'nuxt-ready',
-        title: 'Nuxt 4 Ready',
-        description: 'Leveraging the latest features of the Nuxt 4 framework for top performance.',
-        icon: 'logos:nuxt-icon',
-    },
-    {
-        id: 'tailwind',
-        title: 'TailwindCSS v4',
-        description: 'Styled with the newest, most efficient version of TailwindCSS.',
-        icon: 'logos:tailwindcss-icon',
-    },
-    {
-        id: 'server-api',
-        title: 'Built-in API',
-        description: 'Data is served from a type-safe internal API route in the /server directory.',
-        icon: 'uil:server-network',
-    },
-    {
-        id: 'icon-library',
-        title: 'Icon Library',
-        description: 'Includes @nuxt/icon for easy access to thousands of icons.',
-        icon: 'uil:icons',
-    },
-];
-
-// Creates the API route handler.
-// Because 'featureData' is typed, Nuxt knows the exact shape of the API response.
-export default defineEventHandler((event) => {
-    return featureData;
+// This endpoint now reads from the SQLite database.
+export default defineEventHandler(async () => {
+    try {
+        // This logic remains the same
+        const allFeatures = await db().select().from(features).all();
+        return allFeatures;
+    } catch (e: any) {
+        // Error handling
+        throw createError({
+            statusCode: 500,
+            statusMessage: e.message,
+        });
+    }
 });

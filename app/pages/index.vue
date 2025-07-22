@@ -9,39 +9,39 @@
       Login with GitHub
     </Button>
 
-    <!-- Nuxt Content Section -->
+    <!-- Features List -->
     <div class="mt-10">
       <h2 class="text-2xl font-bold mb-4">Features from API</h2>
 
-      <!-- Show a loading message while the data is being fetched -->
-      <div v-if="pending">
-        <p>Loading features...</p>
-      </div>
-
-      <!-- Show an error message if the fetch fails -->
-      <div v-else-if="error">
-        <p>Could not load features. Please try again later.</p>
-      </div>
-
-      <!-- Otherwise, display the features -->
-      <div v-else-if="features" class="grid md:grid-cols-2 gap-4">
+      <div v-if="pending"><p>Loading features...</p></div>
+      <div v-else-if="error"><p>Could not load features: {{ error.message }}</p></div>
+      <div v-else-if="features && features.length" class="grid md:grid-cols-2 gap-4">
         <div
             v-for="feature in features"
             :key="feature.id"
-            class="p-4 rounded-lg bg-white shadow-sm"
+            class="p-4 border rounded-lg bg-white shadow-sm"
         >
-        {{ feature.title }}
-        {{ feature.description }}
+          <h3 class="text-lg font-semibold flex items-center text-gray-800">
+            <Icon :name="feature.icon" class="mr-3 text-2xl text-emerald-500" />
+            {{ feature.title }}
+          </h3>
+          <p class="text-gray-600 mt-2 pl-9">
+            {{ feature.description }}
+          </p>
         </div>
+      </div>
+      <div v-else>
+        <p>No features found. Add some to the database!</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const {
-    data: features,
-    pending,
-    error,
-  } = await useFetch('/api/features');
+// This part doesn't change at all!
+const {
+  data: features,
+  pending,
+  error,
+} = await useFetch('/api/features');
 </script>
