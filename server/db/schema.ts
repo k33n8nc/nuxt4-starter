@@ -1,10 +1,8 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
-// This defines the 'features' table for our SQLite database.
-// The structure mirrors the interface we had before.
-export const features = sqliteTable('features', {
-    id: integer('id').primaryKey({ autoIncrement: true }), // Use an auto-incrementing integer for the ID
-    title: text('title').notNull(),
-    description: text('description').notNull(),
-    icon: text('icon').notNull(),
+// This defines the 'customers' table for our SQLite database.
+// The 'unique' constraint on email is a best practice to prevent duplicates.
+export const customers = sqliteTable('customers', {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    email: text('email').notNull().unique(),
 });
