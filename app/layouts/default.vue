@@ -1,21 +1,18 @@
 <template>
-  <div>
-    <!-- header part-->
-    <header class="bg-gray-200 h-[50px] w-full flex px-4">
-      <div class="container mx-auto">
-        <h1>MTP Testdata Generator</h1>
-      </div>
+  <div class="min-h-screen flex flex-col">
+    <header class="bg-gray-200 h-14 fixed top-0 w-full z-10">
+      <nav class="container mx-auto h-full flex items-center px-4">
+        <h1 class="font-bold">Nuxt Starter</h1>
+      </nav>
     </header>
-    <!-- main part-->
-    <main class=" h-[calc(100vh-85px)] px-4">
-      <div class="container mx-auto">
-        <slot />
-      </div>
+
+    <main class="flex-1 container mx-auto px-4 mt-14 mb-14 overflow-auto">
+      <slot />
     </main>
-    <!-- footer part-->
-    <footer class="h-[35px] bg-gray-200 px-4">
-      <div class="container mx-auto">
-        footer
+
+    <footer class="bg-gray-200 h-14 fixed bottom-0 w-full">
+      <div class="container mx-auto h-full flex items-center px-4">
+        <span>© {{ new Date().getFullYear() }}</span>
       </div>
     </footer>
   </div>
