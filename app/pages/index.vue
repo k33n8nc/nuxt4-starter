@@ -5,7 +5,7 @@
     </h1>
 
     <div class="mt-6">
-      <CustomerForm @customer-added="handleCustomerAdded" />
+      <CustomerForm @customer-added="handleListUpdate" />
     </div>
 
     <div v-if="pending">
@@ -14,7 +14,7 @@
     <div v-else-if="error">
       Error loading customers: {{ error.message }}
     </div>
-    <CustomerList v-else :customers="customers" />
+    <CustomerList v-else :customers="customers" @customer-deleted="handleListUpdate" />
   </div>
 </template>
 
@@ -23,8 +23,7 @@ import type { Customer } from '~/../server/db/schema';
 
 const { data: customers, pending, error, refresh } = await useFetch<Customer[]>('/api/customers');
 
-function handleCustomerAdded() {
-    // Refresh the list of customers when a new one is added.
+function handleListUpdate() {
     refresh();
 }
 </script>
