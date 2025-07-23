@@ -6,3 +6,5 @@ export const customers = sqliteTable('customers', {
     id: integer('id').primaryKey({ autoIncrement: true }),
     email: text('email').notNull().unique(),
 });
+
+export type Customer = typeof customers.$inferSelect;
