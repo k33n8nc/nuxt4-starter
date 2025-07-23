@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import type { Customer } from '~/../server/db/schema';
 
-defineProps<{
-    customers: Customer[] | undefined
-}>();
+// set properties for this component
+defineProps({
+  customers: {
+    type: Array as PropType<Customer[]>,
+    required: false
+  }
+});
 
+// set emits for this component
 const emit = defineEmits(['customer-deleted']);
 
+// set methods for this component
 async function handleDelete(customerId: number) {
     try {
         await $fetch(`/api/customers/${customerId}`, {
@@ -15,7 +21,6 @@ async function handleDelete(customerId: number) {
         emit('customer-deleted');
     } catch (error) {
         console.error('Failed to delete customer:', error);
-        // You could add user-facing error handling here
     }
 }
 </script>
@@ -33,9 +38,9 @@ async function handleDelete(customerId: number) {
         <p class="text-sm text-gray-600">
           {{ customer.email }}
         </p>
-        <button class="text-red-500 hover:text-red-700" @click="handleDelete(customer.id)">
+        <Button @click="handleDelete(customer.id)" class="bg-red-400">
           <Icon name="fa-solid:trash" />
-        </button>
+        </Button>
       </li>
     </ul>
   </div>
