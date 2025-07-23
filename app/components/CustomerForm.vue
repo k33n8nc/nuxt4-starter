@@ -40,19 +40,19 @@ async function handleSubmit() {
         v-model="state.email"
         name="email"
         type="email"
-        class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-white"
         placeholder="Enter customer email"
         required
       >
     </div>
 
-    <button
+    <Button
       type="submit"
-      class="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
       :disabled="isSubmitting"
     >
       {{ isSubmitting ? 'Adding...' : 'Add Customer' }}
-    </button>
+      <Icon name="fa-solid:plus-circle" class="ml-2 mt-[1px]" />
+    </Button>
 
     <div v-if="errorMessage" class="p-3 mt-4 text-red-700 bg-red-100 border border-red-400 rounded-md">
       <p>{{ errorMessage }}</p>
