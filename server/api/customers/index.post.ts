@@ -5,6 +5,13 @@ export default defineEventHandler(async (event) => {
     try {
         const body = await readBody(event);
 
+        if (!body.email) {
+            throw createError({
+                statusCode: 400,
+                statusMessage: 'Email is required.',
+            });
+        }
+
         const newCustomer = db()
             .insert(customers)
             .values(body)

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Customer } from '~/../server/db/schema';
+import { useCustomerStore } from '~/stores/customerStore';
 
 // set properties for this component
 defineProps({
@@ -9,16 +10,11 @@ defineProps({
   }
 });
 
-// set emits for this component
-const emit = defineEmits(['customer-deleted']);
+const customerStore = useCustomerStore();
 
-// set methods for this component
 async function handleDelete(customerId: number) {
     try {
-        await $fetch(`/api/customers/${customerId}`, {
-            method: 'DELETE',
-        });
-        emit('customer-deleted');
+        await customerStore.deleteCustomer(customerId);
     } catch (error) {
         console.error('Failed to delete customer:', error);
     }

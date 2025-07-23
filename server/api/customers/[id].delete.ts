@@ -26,7 +26,8 @@ export default defineEventHandler(async (event) => {
             });
         }
 
-        return { success: true };
+        setResponseStatus(event, 204);
+        return;
 
     } catch (e: any) {
         // Re-throw known h3 errors.
@@ -41,4 +42,3 @@ export default defineEventHandler(async (event) => {
         });
     }
 });
-

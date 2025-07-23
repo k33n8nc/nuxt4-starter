@@ -1,27 +1,20 @@
 <script setup lang="ts">
-const emit = defineEmits(['customer-added']);
-
+import { useCustomerStore } from '~/stores/customerStore';
+// constants
+const customerStore = useCustomerStore();
 const state = reactive({
     email: '',
 });
 const errorMessage = ref<string | null>(null);
 const isSubmitting = ref(false);
 
+// methods
 async function handleSubmit() {
     isSubmitting.value = true;
     errorMessage.value = null;
     try {
-        await $fetch('/api/customers', {
-            method: 'POST',
-            body: {
-                email: state.email,
-            },
-        });
-
-        // Clear form and emit event
+        await customerStore.addCustomer(state.email);
         state.email = '';
-        emit('customer-added');
-
     } catch (error: any) {
         errorMessage.value = error.data?.statusMessage || 'An unexpected error occurred.';
         console.error('Failed to add customer:', error);

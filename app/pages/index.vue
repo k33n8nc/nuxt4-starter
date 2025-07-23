@@ -5,7 +5,7 @@
     </h1>
 
     <div class="mt-6">
-      <CustomerForm @customer-added="handleListUpdate" />
+      <CustomerForm />
     </div>
 
     <div v-if="pending">
@@ -14,16 +14,17 @@
     <div v-else-if="error">
       Error loading customers: {{ error.message }}
     </div>
-    <CustomerList v-else :customers="customers" @customer-deleted="handleListUpdate" />
+    <CustomerList v-else :customers="customers" />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Customer } from '~/../server/db/schema';
+import { useCustomerStore } from '~/stores/customerStore';
+import { storeToRefs } from 'pinia';
 
-const { data: customers, pending, error, refresh } = await useFetch<Customer[]>('/api/customers');
+const customerStore = useCustomerStore();
+const { customers, pending, error } = storeToRefs(customerStore);
 
-function handleListUpdate() {
-    refresh();
-}
+// Fetch customers when the component is mounted
+await customerStore.fetchCustomers();
 </script>
