@@ -1,58 +1,79 @@
-import {defineStore} from 'pinia';
-import type {Customer} from '~/../server/db/schema';
+import { defineStore } from 'pinia';
+import type { Customer } from '~/../server/db/schema';
 
 export const useCustomerStore = defineStore('customer', () => {
     // State
     const customers = ref<Customer[]>([]);
-    const pending = ref(false);
     const error = ref<Error | null>(null);
 
-    // Actions
+    // GET Customers
     async function fetchCustomers() {
-        pending.value = true;
         error.value = null;
         try {
             customers.value = await $fetch<Customer[]>('/api/customers');
         } catch (e: any) {
             error.value = e;
             console.error('Failed to fetch customers:', e);
-        } finally {
-            pending.value = false;
         }
     }
 
+    // POST Customer
     async function addCustomer(email: string) {
-        const newCustomer = await $fetch<Customer>('/api/customers', {
-            method: 'POST',
-            body: { email },
-        });
-        if (newCustomer) {
-            customers.value.push(newCustomer);
+        error.value = null;
+        try {
+            const newCustomer = await $fetch<Customer>('/api/customers', {
+                method: 'POST',
+                body: { email },
+            });
+            if (newCustomer) {
+                customers.value.push(newCustomer);
+            }
+        } catch (e: any) {
+            error.value = e;
+            console.error('Failed to add customer:', e);
+            throw e;
         }
     }
 
-    async function deleteCustomer(customerId: number) {
+    // PUT Customer
+    async function updateCustomer(customerId: number, updatedFields: Partial<Customer>) {
+        error.value = null;
         try {
-            // Wait for the API call to complete successfully.
+            const updatedCustomer = await $fetch<Customer>(`/api/customers/${customerId}`, {
+                method: 'PUT',
+                body: updatedFields,
+            });
+            customers.value = customers.value.map(c =>
+                c.id === customerId ? { ...c, ...updatedCustomer } : c
+            );
+        } catch (e: any) {
+            error.value = e;
+            console.error('Failed to update customer:', e);
+            throw e;
+        }
+    }
+
+    // DELETE Customer
+    async function deleteCustomer(customerId: number) {
+        error.value = null;
+        try {
             await $fetch(`/api/customers/${customerId}`, {
                 method: 'DELETE',
             });
-
-            // On success, remove the customer from the local state using filter.
             customers.value = customers.value.filter(c => c.id !== customerId);
         } catch (e: any) {
+            error.value = e;
             console.error('Failed to delete customer:', e);
-            // Re-throw the error to be handled by the component if needed.
             throw e;
         }
     }
 
     return {
         customers,
-        pending,
         error,
         fetchCustomers,
         addCustomer,
         deleteCustomer,
+        updateCustomer,
     };
 });
