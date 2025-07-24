@@ -5,7 +5,6 @@ import { customers } from '../../db/schema';
 export default defineEventHandler(async (event) => {
     try {
         const customerId = getRouterParam(event, 'id');
-
         if (!customerId) {
             throw createError({
                 statusCode: 400,
@@ -28,13 +27,8 @@ export default defineEventHandler(async (event) => {
 
         setResponseStatus(event, 204);
         return;
-
     } catch (e: any) {
-        // Re-throw known h3 errors.
-        if (e.statusCode) {
-            throw e;
-        }
-
+        if (e.statusCode) throw e;
         console.error('Error deleting customer:', e);
         throw createError({
             statusCode: 500,
