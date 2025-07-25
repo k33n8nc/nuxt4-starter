@@ -8,13 +8,7 @@
       <CustomerForm />
     </div>
 
-    <div v-if="pending">
-      Loading customers...
-    </div>
-    <div v-else-if="error">
-      Error loading customers: {{ error.message }}
-    </div>
-    <CustomerList v-else :customers="customers" />
+    <CustomerList :customers="customers" />
   </div>
 </template>
 
@@ -23,7 +17,7 @@ import { useCustomerStore } from '~/stores/customerStore';
 import { storeToRefs } from 'pinia';
 
 const customerStore = useCustomerStore();
-const { customers, pending, error } = storeToRefs(customerStore);
+const { customers, error } = storeToRefs(customerStore);
 
 // Fetch customers when the component is mounted
 await customerStore.fetchCustomers();
